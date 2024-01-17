@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from database import SessionLocal
 from routes import (
     user_routes,
     product_routes,
@@ -8,6 +10,15 @@ from routes import (
 )
 
 app = FastAPI()
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 # Including different route modules
 app.include_router(user_routes.router)
