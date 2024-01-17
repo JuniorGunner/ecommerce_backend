@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 # SQLAlchemy database URL. For PostgreSQL, it might look like:
 # SQLALCHEMY_DATABASE_URL = "postgresql://username:password@localhost/dbname"
-SQLALCHEMY_DATABASE_URL = "your_database_url"
+SQLALCHEMY_DATABASE_URL = "postgresql://admin:3c0mm3rc3@db/ecommerce_db"
 
 # Create a SQLAlchemy engine instance
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

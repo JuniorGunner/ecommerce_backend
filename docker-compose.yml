@@ -12,16 +12,18 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=postgresql://user:password@db/dbname
+      - DATABASE_URL=postgresql://admin:3c0mm3rc3@db/ecommerce_db
 
   db:
     image: postgres:13
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 3c0mm3rc3
+      POSTGRES_DB: ecommerce_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: dbname
+    ports:
+      - "5432:5432"
 
 volumes:
   postgres_data:
