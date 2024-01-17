@@ -1,6 +1,6 @@
 # routes/cart_routes.py
 from fastapi import APIRouter
-from models.cart import CartItem
+from api_models.cart import CartItem
 
 router = APIRouter()
 
