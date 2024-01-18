@@ -1,6 +1,4 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from database import SessionLocal
+from fastapi import FastAPI
 from routes import (
     user_routes,
     product_routes,
@@ -9,19 +7,11 @@ from routes import (
     analytics_routes
 )
 
+# TODO: app = FastAPI(title="E-commerce API", version="1.0")
 app = FastAPI()
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
 # Including different route modules
-app.include_router(user_routes.router)
+app.include_router(user_routes.router) # TODO: prefix (versioning)
 app.include_router(product_routes.router)
 app.include_router(order_routes.router)
 app.include_router(cart_routes.router)

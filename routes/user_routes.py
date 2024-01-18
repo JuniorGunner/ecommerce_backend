@@ -1,11 +1,13 @@
-from fastapi import APIRouter
-from schemas.user import User
+from fastapi import APIRouter, Depends
+from schemas.user import UserSchema
+from sqlalchemy.orm import Session
+from database import get_db
 
 router = APIRouter()
 
 
 @router.post("/register")
-def register_user(user: User):
+def register_user(user: UserSchema, db: Session = Depends(get_db)):
     """
     Register a new user.
     """
@@ -14,7 +16,7 @@ def register_user(user: User):
 
 
 @router.post("/login")
-def login_user(user: User):
+def login_user(user: UserSchema, db: Session = Depends(get_db)):
     """
     Authenticate a user and return an access token
     """
