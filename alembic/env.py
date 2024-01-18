@@ -10,10 +10,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # Import your model's MetaData object
 from database import Base
-from db_models.user import User
-from db_models.product import Product
-from db_models.order import Order
-from db_models.cart import CartItem
+from models.user import User
+from models.product import Product
+from models.order import Order
+from models.cart import CartItem
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

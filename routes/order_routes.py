@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from api_models.order import Order
+from schemas.order import Order
 
 router = APIRouter()
 
