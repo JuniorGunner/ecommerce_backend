@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.security import OAuth2PasswordBearer
 from routes import (
     user_routes,
     product_routes,
@@ -9,6 +10,8 @@ from routes import (
 
 # TODO: app = FastAPI(title="E-commerce API", version="1.0")
 app = FastAPI()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 # Including different route modules
 app.include_router(user_routes.router) # TODO: prefix (versioning)

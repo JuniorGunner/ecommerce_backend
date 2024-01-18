@@ -4,9 +4,11 @@ from typing import Optional
 from passlib.context import CryptContext
 from models.user import UserModel
 from schemas.user import UserSchema
+from schemas.token import TokenData
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
-from fastapi.security import OAuth2AuthorizationCodeBearer
+from fastapi import HTTPException, status, Depends
+from fastapi.security import OAuth2PasswordBearer
+from database import get_db
 
 # Secret key for JWT encoding/decoding, typically generated from a secure random source
 SECRET_KEY = "YOUR_SECRET_KEY"
@@ -14,7 +16,7 @@ ALGORITHM = "HS256"  # Algorithm used for JWT encoding
 ACCESS_TOKEN_EXPIRE_MINUTES = 30  # Token expiration time in minutes
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2AuthorizationCodeBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 def verify_password(plain_password, hashed_password):
@@ -27,7 +29,6 @@ def get_password_hash(password):
 
 def get_user(db: Session, username: str):
     return db.query(UserModel).filter(UserModel.username == username).first()
-
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -59,7 +60,10 @@ def create_user(db: Session, user: UserSchema):
     return db_user
 
 
-def get_current_user(db: Session, token: str):
+def get_current_user(
+        db: Session = Depends(get_db),
+        token: str = Depends(oauth2_scheme)
+):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -69,13 +73,12 @@ def get_current_user(db: Session, token: str):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise credentials_exception
-        # Need to import TokenData schema from schemas
-        from schemas.token import TokenData
+            raise credentials_exception        
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(db, username=token_data.username)
+    # user = get_user(db, username=token_data.username)
+    user = get_user(db, token_data.username)
     if user is None:
         raise credentials_exception
     return user
