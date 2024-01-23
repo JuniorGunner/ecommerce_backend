@@ -53,7 +53,9 @@ def authenticate_user(db: Session, username: str, password: str):
 
 def create_user(db: Session, user: UserSchema):
     hashed_password = get_password_hash(user.password)
-    db_user = UserModel(username=user.username, email=user.email, hashed_password=hashed_password)
+    db_user = UserModel(
+        username=user.username, email=user.email, hashed_password=hashed_password
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -61,8 +63,7 @@ def create_user(db: Session, user: UserSchema):
 
 
 def get_current_user(
-        db: Session = Depends(get_db),
-        token: str = Depends(oauth2_scheme)
+    db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -73,7 +74,7 @@ def get_current_user(
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise credentials_exception        
+            raise credentials_exception
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception

@@ -9,10 +9,7 @@ router = APIRouter()
 
 
 @router.get("/products")
-def list_products(
-    db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
-):
+def list_products(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     """
     List all available products.
     """
@@ -22,9 +19,7 @@ def list_products(
 
 @router.get("/products/{product_id}")
 def get_product_details(
-    product_id: int,
-    db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
+    product_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ):
     """
     Get details of a specific product.
@@ -39,7 +34,7 @@ def get_product_details(
 def add_product(
     product: ProductSchema,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme),
 ):
     """
     Add a new product to the inventory.
@@ -52,7 +47,7 @@ def update_product(
     product_id: int,
     product: ProductSchema,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme),
 ):
     """
     Update the details of an existing product.
@@ -65,9 +60,7 @@ def update_product(
 
 @router.delete("/products/delete/{product_id}")
 def delete_product(
-    product_id: int,
-    db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme)
+    product_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
 ):
     """
     Remove a product from the inventory.

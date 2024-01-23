@@ -21,4 +21,5 @@ def get_order_details(order_id: int):
     # Logic to get order details here
     return {"order": "order details"}
 
+
 # Additional routes for listing user orders and updating order status can be added here

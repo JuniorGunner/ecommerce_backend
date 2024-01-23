@@ -12,7 +12,9 @@ def get_product(db: Session, product_id: int):
 
 
 def create_product(db: Session, product: ProductSchema):
-    db_product = ProductModel(name=product.name, description=product.description, price=product.price)
+    db_product = ProductModel(
+        name=product.name, description=product.description, price=product.price
+    )
     db.add(db_product)
     db.commit()
     db.refresh(db_product)

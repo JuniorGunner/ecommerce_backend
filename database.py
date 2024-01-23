@@ -12,12 +12,14 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 # SessionLocal class is a factory for creating new Session objects
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
 
 # Base class for declarative class definitions
 Base = declarative_base()
