@@ -48,7 +48,7 @@ def login_user(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestFo
 def get_user_profile(
     db: Session = Depends(get_db),
     token: str = Depends(oauth2_scheme),
-    current_user: UserSchema = Security(get_current_user, scopes=[])
+    # current_user: UserSchema = Security(get_current_user, scopes=[])
 ):
     """
     Retrieve the profile information of the logged-in user.

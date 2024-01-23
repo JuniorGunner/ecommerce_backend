@@ -3,12 +3,16 @@ from sqlalchemy.orm import Session
 from database import get_db
 from schemas.product import ProductSchema
 from services import product_service
+from services.user_service import oauth2_scheme, get_current_user
 
 router = APIRouter()
 
 
 @router.get("/products")
-def list_products(db: Session = Depends(get_db)):
+def list_products(
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
     """
     List all available products.
     """
@@ -17,7 +21,11 @@ def list_products(db: Session = Depends(get_db)):
 
 
 @router.get("/products/{product_id}")
-def get_product_details(product_id: int, db: Session = Depends(get_db)):
+def get_product_details(
+    product_id: int,
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
     """
     Get details of a specific product.
     """
@@ -28,7 +36,11 @@ def get_product_details(product_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/products/add", response_model=ProductSchema)
-def add_product(product: ProductSchema, db: Session = Depends(get_db)):
+def add_product(
+    product: ProductSchema,
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
     """
     Add a new product to the inventory.
     """
@@ -36,7 +48,12 @@ def add_product(product: ProductSchema, db: Session = Depends(get_db)):
 
 
 @router.put("/products/update/{product_id}", response_model=ProductSchema)
-def update_product(product_id: int, product: ProductSchema, db: Session = Depends(get_db)):
+def update_product(
+    product_id: int,
+    product: ProductSchema,
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
     """
     Update the details of an existing product.
     """
@@ -47,7 +64,11 @@ def update_product(product_id: int, product: ProductSchema, db: Session = Depend
 
 
 @router.delete("/products/delete/{product_id}")
-def delete_product(product_id: int, db: Session = Depends(get_db)):
+def delete_product(
+    product_id: int,
+    db: Session = Depends(get_db),
+    token: str = Depends(oauth2_scheme)
+):
     """
     Remove a product from the inventory.
     """
