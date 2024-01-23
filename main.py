@@ -9,7 +9,7 @@ from routes import (
 )
 
 # TODO: app = FastAPI(title="E-commerce API", version="1.0")
-app = FastAPI()
+app = FastAPI(title="E-commerce API", version="1.0.0")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 

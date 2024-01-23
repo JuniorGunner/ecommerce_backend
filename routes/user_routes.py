@@ -14,6 +14,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
+# TODO: make endpoints dependent of authentication
+
 
 @router.post("/register")
 def register_user(user: UserSchema, db: Session = Depends(get_db)):
