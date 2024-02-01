@@ -6,7 +6,7 @@ from alembic import context
 
 # Append the project root directory to the sys.path
 # This assumes that `env.py` is inside the 'alembic' directory which is at the project root
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 # Import your model's MetaData object
 from database import Base
@@ -69,7 +69,7 @@ def run_migrations_online() -> None:
     """
     # ini_section = config.get_section(config.config_ini_section)
     # ini_section['sqlalchemy.url'] = config.get_main_option("sqlalchemy.url")
-    
+
     # connectable = engine_from_config(
     #     ini_section,
     #     prefix="sqlalchemy.",
@@ -90,18 +90,13 @@ def run_migrations_online() -> None:
     url = configuration.get("sqlalchemy.url")
     if not url:
         raise Exception("No sqlalchemy.url set in the Alembic configuration.")
-    
+
     connectable = engine_from_config(
-        configuration,
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool
+        configuration, prefix="sqlalchemy.", poolclass=pool.NullPool
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()
 

@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from passlib.context import CryptContext
 from models.user import UserModel
-from schemas.user import UserSchema
+from schemas.user import UserSchema, UserResponseSchema
 from schemas.token import TokenData
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Depends
@@ -64,7 +64,7 @@ def create_user(db: Session, user: UserSchema):
 
 def get_current_user(
     db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
-):
+) -> UserResponseSchema:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

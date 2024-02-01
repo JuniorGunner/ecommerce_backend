@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from database import Base
 
 
-class Order(Base):
+class OrderModel(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True, index=True)
