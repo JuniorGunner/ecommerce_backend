@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from schemas.product import ProductSchema
+from schemas.user import UserResponseSchema
 from services import product_service
 from services.user_service import oauth2_scheme, get_current_user
 
@@ -9,7 +10,10 @@ router = APIRouter()
 
 
 @router.get("/products")
-def list_products(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+def list_products(
+    db: Session = Depends(get_db),
+    current_user: UserResponseSchema = Depends(get_current_user),
+):
     """
     List all available products.
     """
@@ -19,7 +23,9 @@ def list_products(db: Session = Depends(get_db), token: str = Depends(oauth2_sch
 
 @router.get("/products/{product_id}")
 def get_product_details(
-    product_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+    product_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserResponseSchema = Depends(get_current_user),
 ):
     """
     Get details of a specific product.
@@ -34,7 +40,7 @@ def get_product_details(
 def add_product(
     product: ProductSchema,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme),
+    current_user: UserResponseSchema = Depends(get_current_user),
 ):
     """
     Add a new product to the inventory.
@@ -47,7 +53,7 @@ def update_product(
     product_id: int,
     product: ProductSchema,
     db: Session = Depends(get_db),
-    token: str = Depends(oauth2_scheme),
+    current_user: UserResponseSchema = Depends(get_current_user),
 ):
     """
     Update the details of an existing product.
@@ -60,7 +66,9 @@ def update_product(
 
 @router.delete("/products/delete/{product_id}")
 def delete_product(
-    product_id: int, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)
+    product_id: int,
+    db: Session = Depends(get_db),
+    current_user: UserResponseSchema = Depends(get_current_user),
 ):
     """
     Remove a product from the inventory.
