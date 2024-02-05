@@ -6,13 +6,11 @@ from schemas.product import ProductSchema
 from services import product_service
 
 
-# Mocking the database session for all tests
 @pytest.fixture
 def mock_db_session(mocker):
-    # Mock the SessionLocal class to return a mock session
-    mock_session = mocker.MagicMock(spec=Session)
-    mocker.patch("database.SessionLocal", return_value=mock_session)
-    return mock_session
+    # Mock the Session object
+    session = mocker.MagicMock(spec=Session)
+    return session
 
 
 @pytest.fixture
