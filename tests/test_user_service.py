@@ -4,14 +4,7 @@ import pytest
 from sqlalchemy.orm import Session
 from models.user import UserModel
 from schemas.user import UserSchema
-from services.user_service import (
-    create_access_token,
-    create_user,
-    get_current_user,
-    authenticate_user,
-    get_password_hash,
-    verify_password,
-)
+from services import user_service
 from jose import jwt
 
 # User data for testing
@@ -36,7 +29,7 @@ def test_create_user(mock_db_session):
     mock_db_session.refresh = MagicMock()
 
     # Call the service function with the mocked session
-    user = create_user(mock_db_session, user_data)
+    user = user_service.create_user(mock_db_session, user_data)
 
     # Assertions to ensure the service function behaves as expected
     mock_db_session.add.assert_called_once()
@@ -45,8 +38,8 @@ def test_create_user(mock_db_session):
 
 def test_verify_password():
     password = "secret"
-    hashed_password = get_password_hash(password)
-    assert verify_password(password, hashed_password) is True
+    hashed_password = user_service.get_password_hash(password)
+    assert user_service.verify_password(password, hashed_password) is True
 
 
 def test_authenticate_user(mocker, mock_db_session):
@@ -60,7 +53,7 @@ def test_authenticate_user(mocker, mock_db_session):
     mocker.patch("services.user_service.verify_password", return_value=True)
 
     # Call the service function
-    user = authenticate_user(mock_db_session, user_data.username, user_data.password)
+    user = user_service.authenticate_user(mock_db_session, user_data.username, user_data.password)
 
     # Assertions
     assert user is not False
@@ -69,7 +62,7 @@ def test_authenticate_user(mocker, mock_db_session):
 
 def test_create_access_token():
     user_data = {"sub": "testuser"}
-    token = create_access_token(data=user_data, expires_delta=timedelta(minutes=15))
+    token = user_service.create_access_token(data=user_data, expires_delta=timedelta(minutes=15))
     payload = jwt.decode(token, "YOUR_SECRET_KEY", algorithms=["HS256"])
     assert payload.get("sub") == "testuser"
 
@@ -86,7 +79,7 @@ def test_get_current_user(mocker, mock_db_session):
     fake_token = "fake_token"
 
     # Call the service function with mocked dependencies
-    user = get_current_user(mock_db_session, fake_token)
+    user = user_service.get_current_user(mock_db_session, fake_token)
 
     # Assertions
     assert user.username == user_data.username
