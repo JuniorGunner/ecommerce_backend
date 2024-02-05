@@ -2,7 +2,7 @@
 
 This repository contains the backend code for an e-commerce platform. The service is written in Python, using FastAPI as the web framework, and SQLAlchemy for ORM, with PostgreSQL as the database. It includes a RESTful API for users, carts, orders, and products.
 
-## Tech Stack
+## Tech Stack 🛠️
 
 - **FastAPI**: A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
 - **SQLAlchemy**: The Python SQL toolkit and Object-Relational Mapper that gives application developers the full power and flexibility of SQL.
@@ -32,46 +32,56 @@ ecommerce_backend/
 |-- Makefile            # Makefile with commands to manage the Docker containers
 |-- README.md           # README file
 |-- requirements.txt    # List of dependencies
+```
 
-
-Getting Started
-Prerequisites
+## Getting Started
+### Prerequisites
 Make sure you have Docker and Docker Compose installed on your system.
 
-Running the Application
-Start the Application:
-
+### Running the Application 🚀
 Use the Makefile for managing the lifecycle of the application.
 
+```
 make up
+```
 
 This command will build the Docker images and start the services defined in docker-compose.yml.
 
-Apply Database Migrations:
+### Apply Database Migrations:
 
 After starting the application, you'll need to apply database migrations. Run the following command:
 
+```
 docker-compose exec web alembic upgrade head
+```
 
 This command runs Alembic's upgrade command inside the web container to apply the database migrations.
 
-Stopping the Application:
+### Stopping the Application:
 
 To stop the application and remove containers, networks, volumes, and images created by up, run:
 
+```
 make down
+```
 
-Restarting the Application:
+### Restarting the Application:
 
 If you need to restart the application, use:
 
+```
 make restart
+```
 
-Running Tests
+### Running Tests
 To run the automated tests for this system, execute the following command inside the root folder:
 
+```
 pytest
+```
 
 or for verbode mode:
 
+```
 pytest -v
+```
